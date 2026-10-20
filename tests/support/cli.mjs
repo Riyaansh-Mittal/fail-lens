@@ -18,23 +18,18 @@ async function firstExisting(paths) {
 }
 
 /**
- * Run the CLI using the repository's source entry point. OMNIRUSH_CLI may be
- * set to a JSON array (for example `["node","dist/cli.js"]`) by a release
- * job when the project is packaged rather than run from source.
+ * Run the built CLI. OMNIRUSH_CLI may be set to a JSON array by a release job
+ * when the project is packaged rather than run from the repository checkout.
  */
 export async function runCli(args, options = {}) {
   const command = process.env.OMNIRUSH_CLI
     ? JSON.parse(process.env.OMNIRUSH_CLI)
     : undefined;
-  const executable = command ?? (() => {
-    const dist = ["dist/cli.js", "dist/index.js"];
-    // The documented source workflow uses tsx. Keep TypeScript execution out
-    // of the test process so the same harness works before and after a build.
-    return ["npx", "--yes", "tsx", "src/cli.ts"];
-  })();
+  const builtCli = command ? undefined : await firstExisting(["dist/cli.js"]);
+  const executable = command ?? (builtCli ? ["node", builtCli] : undefined);
   if (!executable[1]) {
     throw new Error(
-      "No CLI entry point found (expected dist/cli.js, dist/index.js, src/cli.ts, or src/index.ts)",
+      "Built CLI not found at dist/cli.js; run npm run build before acceptance tests",
     );
   }
 

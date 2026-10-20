@@ -14,10 +14,13 @@ test("frozen contracts remain exported and versioned", async () => {
   assert.match(report, /schemaVersion:\s*[\"']1[\"']/);
 });
 
-test("release workflow runs the dependency-free QA checks", async () => {
+test("release workflow runs the declared typecheck, build, and test checks", async () => {
   const workflow = await readFile(join(root, ".github/workflows/ci.yml"), "utf8");
   assert.match(workflow, /actions\/checkout@v4/);
   assert.match(workflow, /actions\/setup-node@v4/);
-  assert.match(workflow, /node --test tests\/\*\*\/\*\.test\.mjs/);
+  assert.match(workflow, /run: npm run typecheck/);
+  assert.match(workflow, /run: npm run build/);
+  assert.match(workflow, /run: npm test/);
+  assert.match(workflow, /run: npm run test:unit/);
   assert.match(workflow, /permissions:\s*\n\s+contents:\s+read/);
 });

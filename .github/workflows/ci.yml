@@ -29,7 +29,6 @@ jobs:
         run: npm run build
       - name: Run acceptance and privacy tests
         run: npm test
-        # Equivalent to the original dependency-free check: node --test tests/**/*.test.mjs
       - name: Run unit tests
         run: npm run test:unit
 
