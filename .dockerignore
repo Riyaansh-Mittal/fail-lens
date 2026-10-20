@@ -1,0 +1,13 @@
+.git
+.github
+.opencode
+.omnirush
+node_modules
+dist
+coverage
+tests
+.env
+.env.*
+!.env.example
+*.log
+*.tgz

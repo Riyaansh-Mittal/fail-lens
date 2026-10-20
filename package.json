@@ -14,14 +14,13 @@
     "examples"
   ],
   "scripts": {
-    "test": "npm run build && node --test tests/acceptance/*.test.mjs tests/privacy/*.test.mjs",
-    "test:unit": "tsx --test tests/ingest/*.test.ts tests/report/*.test.ts tests/reproduce/*.test.ts && vitest run tests/diagnose/diagnose.test.ts",
+    "test": "npm run build && node --test tests/acceptance/*.test.mjs tests/privacy/*.test.mjs && tsx --test tests/ingest/*.test.ts tests/report/*.test.ts tests/reproduce/*.test.ts && vitest run tests/diagnose/diagnose.test.ts",
     "typecheck": "tsc --noEmit",
     "build": "npm run clean && tsc",
     "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\""
   },
   "engines": {
-    "node": ">=20"
+    "node": "22.23.3"
   },
   "license": "MIT",
   "devDependencies": {

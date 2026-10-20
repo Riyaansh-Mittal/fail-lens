@@ -89,7 +89,7 @@ Deterministic rules handle the core analysis. Optional AI-assisted explanations 
 
 ### Requirements
 
-- Node.js 20 or newer
+- Node.js 22.23.3 (see [`.nvmrc`](.nvmrc))
 - npm
 
 ### From a repository checkout
@@ -120,6 +120,26 @@ cat failures.json | node dist/cli.js --format json --output report.json
 ```
 
 The commands above use the built CLI, so they do not depend on `npx` downloading tools at runtime.
+
+### Docker
+
+Build the pinned Linux image:
+
+```bash
+docker build -t fail-lens .
+```
+
+Run the bundled sample:
+
+```bash
+docker run --rm fail-lens examples/sample-failure.txt
+```
+
+Analyze a local report through standard input:
+
+```bash
+cat failures.json | docker run --rm -i fail-lens --format json
+```
 
 ## Usage
 
@@ -226,19 +246,17 @@ Run acceptance and privacy tests:
 npm test
 ```
 
-Run parser, diagnostics, reporting, and reproduction tests:
-
-```bash
-npm run test:unit
-```
-
-The test workflow builds the CLI before acceptance tests and uses declared local dependencies rather than downloading tools through `npx` during individual tests.
+`npm test` is the single project test command. It builds the CLI, runs the acceptance and privacy tests, then runs the parser, diagnostics, reporting, and reproduction tests. It uses declared local dependencies rather than downloading tools through `npx` during individual tests.
 
 ## Project structure
 
 ```text
 fail-lens/
 ├── .github/workflows/ci.yml
+├── .dockerignore
+├── .env.example
+├── .nvmrc
+├── Dockerfile
 ├── docs/privacy.md
 ├── examples/sample-failure.txt
 ├── src/

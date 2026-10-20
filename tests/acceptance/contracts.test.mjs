@@ -21,6 +21,6 @@ test("release workflow runs the declared typecheck, build, and test checks", asy
   assert.match(workflow, /run: npm run typecheck/);
   assert.match(workflow, /run: npm run build/);
   assert.match(workflow, /run: npm test/);
-  assert.match(workflow, /run: npm run test:unit/);
+  assert.doesNotMatch(workflow, /npx\s/);
   assert.match(workflow, /permissions:\s*\n\s+contents:\s+read/);
 });

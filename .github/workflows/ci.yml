@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: npm
       - name: Install dependencies when a package manifest exists
         shell: bash
@@ -29,8 +29,6 @@ jobs:
         run: npm run build
       - name: Run acceptance and privacy tests
         run: npm test
-      - name: Run unit tests
-        run: npm run test:unit
 
   contracts:
     runs-on: ubuntu-latest
