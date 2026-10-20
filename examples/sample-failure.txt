@@ -1,9 +1,0 @@
-Playwright test run
-  ✘ checkout flow rejects an expired card (tests/checkout.spec.ts:42:11)
-
-  Error: expect(received).toBe(expected)
-  Expected: "declined"
-  Received: "approved"
-  at tests/checkout.spec.ts:42:11
-
-  1 failed, 4 passed

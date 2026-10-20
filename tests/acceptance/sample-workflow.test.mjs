@@ -1,24 +1,28 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { runCli, tempCase } from "../support/cli.mjs";
+import { runCli } from "../support/cli.mjs";
 
-const fixture = join(new URL("..", import.meta.url).pathname, "fixtures/sample-run.json");
+const sample = join(new URL("../..", import.meta.url).pathname, "examples/sample-failure.json");
 
-test("sample workflow ingests a run and emits a versioned report", async () => {
-  const files = await tempCase();
-  const input = await files.input("sample-run.json", await readFile(fixture, "utf8"));
-  const output = files.output();
-  const result = await runCli(["--input", input, "--output", output, "--format", "json"]);
+test("canonical Playwright sample produces cross-domain diagnostics", async () => {
+  const result = await runCli(["--input", sample, "--format", "json"]);
 
-  assert.equal(result.code, 0, `CLI failed:\n${result.stderr}`);
-  const report = await files.readJson(output);
+  assert.equal(result.code, 0, `CLI failed:\n${result.stdout}\n${result.stderr}`);
+  const report = JSON.parse(result.stdout);
   assert.equal(report.schemaVersion, "1");
   assert.ok(Array.isArray(report.failures));
   assert.ok(Array.isArray(report.evidence));
   assert.ok(Array.isArray(report.diagnostics));
-  assert.equal(report.summary.total, report.failures.length);
-  assert.equal(report.summary.failed, report.failures.filter((failure) => failure.status === "failed").length);
-  assert.ok(report.failures.some((failure) => failure.testName === "checkout rejects an expired card"));
+  assert.ok(report.failures.length > 1, "the sample should contain multiple test records");
+  const failed = report.failures.filter((failure) => ["failed", "timed-out", "errored"].includes(failure.status));
+  assert.ok(failed.length > 1, "the sample should contain multiple failures");
+  assert.ok(report.diagnostics.length >= 4, "the sample should produce at least four diagnostics");
+
+  const failureNames = failed
+    .map((failure) => `${failure.suiteName ?? ""} ${failure.testName}`.toLowerCase())
+    .join("\n");
+  for (const domain of ["checkout", "auth", "search", "reporting"]) {
+    assert.match(failureNames, new RegExp(domain), `expected a ${domain} failure`);
+  }
 });

@@ -1,0 +1,691 @@
+{
+  "config": {
+    "workers": 6,
+    "projects": [
+      { "name": "chromium", "use": { "browserName": "chromium" } },
+      { "name": "firefox", "use": { "browserName": "firefox" } },
+      { "name": "webkit", "use": { "browserName": "webkit" } }
+    ]
+  },
+  "suites": [
+    {
+      "title": "checkout",
+      "file": "tests/e2e/checkout.spec.ts",
+      "specs": [
+        {
+          "title": "completes a card checkout",
+          "line": 38,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 1842,
+                  "retry": 0,
+                  "stdout": "created order ord_10482; payment authorized; confirmation email queued"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "rejects an expired card",
+          "line": 61,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "failed",
+                  "duration": 2384,
+                  "retry": 0,
+                  "error": {
+                    "message": "expect(received).toBe(expected)\nExpected: \"declined\"\nReceived: \"approved\"",
+                    "stack": "Error: expect(received).toBe(expected)\n    at tests/e2e/checkout.spec.ts:68:31\n    at checkoutPage.submitPayment (src/pages/checkout-page.ts:142:18)"
+                  },
+                  "stdout": "POST /api/payments 201 742ms\nresponse body: { status: \"approved\", authorizationCode: \"auth_7b31\" }",
+                  "attachments": [
+                    { "name": "checkout-expired-card.png", "path": "test-results/checkout-expired-card-chromium/test-failed-1.png" }
+                  ]
+                },
+                {
+                  "status": "failed",
+                  "duration": 2198,
+                  "retry": 1,
+                  "error": {
+                    "message": "expect(received).toBe(expected)\nExpected: \"declined\"\nReceived: \"approved\"",
+                    "stack": "Error: expect(received).toBe(expected)\n    at tests/e2e/checkout.spec.ts:68:31\n    at checkoutPage.submitPayment (src/pages/checkout-page.ts:142:18)"
+                  },
+                  "stdout": "POST /api/payments 201 701ms\nresponse body: { status: \"approved\", authorizationCode: \"auth_9c42\" }"
+                },
+                {
+                  "status": "failed",
+                  "duration": 2261,
+                  "retry": 2,
+                  "error": {
+                    "message": "expect(received).toBe(expected)\nExpected: \"declined\"\nReceived: \"approved\"",
+                    "stack": "Error: expect(received).toBe(expected)\n    at tests/e2e/checkout.spec.ts:68:31\n    at checkoutPage.submitPayment (src/pages/checkout-page.ts:142:18)"
+                  },
+                  "stderr": "payment sandbox returned an approved response for fixture card 4000000000000069"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "applies a percentage coupon before payment",
+          "line": 92,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "timedOut",
+                  "duration": 30015,
+                  "retry": 0,
+                  "error": {
+                    "message": "Test timeout of 30000ms exceeded while waiting for locator('[data-testid=discount-total]')",
+                    "stack": "TimeoutError: locator('[data-testid=discount-total]')\n    at tests/e2e/checkout.spec.ts:104:44\n    at checkoutPage.applyCoupon (src/pages/checkout-page.ts:88:22)"
+                  },
+                  "stdout": "POST /api/cart/coupon 200 289ms\nGET /api/cart/summary 200 29401ms"
+                },
+                {
+                  "status": "timedOut",
+                  "duration": 30009,
+                  "retry": 1,
+                  "error": {
+                    "message": "Test timeout of 30000ms exceeded while waiting for locator('[data-testid=discount-total]')",
+                    "stack": "TimeoutError: locator('[data-testid=discount-total]')\n    at tests/e2e/checkout.spec.ts:104:44\n    at checkoutPage.applyCoupon (src/pages/checkout-page.ts:88:22)"
+                  },
+                  "stderr": "GET /api/cart/summary pending after 30s"
+                },
+                {
+                  "status": "timedOut",
+                  "duration": 30012,
+                  "retry": 2,
+                  "error": {
+                    "message": "Test timeout of 30000ms exceeded while waiting for locator('[data-testid=discount-total]')",
+                    "stack": "TimeoutError: locator('[data-testid=discount-total]')\n    at tests/e2e/checkout.spec.ts:104:44\n    at checkoutPage.applyCoupon (src/pages/checkout-page.ts:88:22)"
+                  },
+                  "stderr": "GET /api/cart/summary pending after 30s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "restores a saved cart after sign in",
+          "line": 133,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "skipped",
+                  "duration": 0,
+                  "retry": 0,
+                  "stderr": "Skipped on webkit: cart restore service is not enabled in this project"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "authentication",
+      "file": "tests/e2e/authentication.spec.ts",
+      "specs": [
+        {
+          "title": "logs in with a valid password",
+          "line": 24,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 1164,
+                  "retry": 0,
+                  "stdout": "POST /api/auth/login 200 188ms\nredirected to /account"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "refreshes an expired access token",
+          "line": 57,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "failed",
+                  "duration": 1782,
+                  "retry": 0,
+                  "error": {
+                    "message": "request failed: connect ECONNREFUSED 127.0.0.1:4010",
+                    "stack": "Error: request failed: connect ECONNREFUSED 127.0.0.1:4010\n    at refreshSession (src/auth/session.ts:74:11)\n    at tests/e2e/authentication.spec.ts:69:5"
+                  },
+                  "stderr": "POST http://auth-mock:4010/oauth/token failed after 3 retries\nAuthorization: Bearer eyJhbGciOiJIUzI1NiJ9.sample-test-token"
+                },
+                {
+                  "status": "passed",
+                  "duration": 621,
+                  "retry": 1,
+                  "stdout": "POST /oauth/token 200 411ms\nrefreshed access token and retried /api/me"
+                },
+                {
+                  "status": "failed",
+                  "duration": 1774,
+                  "retry": 2,
+                  "error": {
+                    "message": "request failed: connect ECONNREFUSED 127.0.0.1:4010",
+                    "stack": "Error: request failed: connect ECONNREFUSED 127.0.0.1:4010\n    at refreshSession (src/auth/session.ts:74:11)\n    at tests/e2e/authentication.spec.ts:69:5"
+                  },
+                  "stderr": "POST http://auth-mock:4010/oauth/token failed after 3 retries"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "completes the SSO callback",
+          "line": 104,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "timedOut",
+                  "duration": 30006,
+                  "retry": 0,
+                  "error": {
+                    "message": "Test timeout of 30000ms exceeded waiting for URL **/auth/callback**",
+                    "stack": "TimeoutError: page.waitForURL: Test timeout of 30000ms exceeded\n    at tests/e2e/authentication.spec.ts:119:16"
+                  },
+                  "stdout": "redirected to https://id.example.test/authorize\ncallback request was never observed"
+                },
+                {
+                  "status": "timedOut",
+                  "duration": 30003,
+                  "retry": 1,
+                  "error": {
+                    "message": "Test timeout of 30000ms exceeded waiting for URL **/auth/callback**",
+                    "stack": "TimeoutError: page.waitForURL: Test timeout of 30000ms exceeded\n    at tests/e2e/authentication.spec.ts:119:16"
+                  },
+                  "stderr": "identity provider callback did not arrive"
+                },
+                {
+                  "status": "timedOut",
+                  "duration": 30004,
+                  "retry": 2,
+                  "error": {
+                    "message": "Test timeout of 30000ms exceeded waiting for URL **/auth/callback**",
+                    "stack": "TimeoutError: page.waitForURL: Test timeout of 30000ms exceeded\n    at tests/e2e/authentication.spec.ts:119:16"
+                  },
+                  "stderr": "identity provider callback did not arrive"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "blocks a suspended account",
+          "line": 146,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "failed",
+                  "duration": 903,
+                  "retry": 0,
+                  "error": {
+                    "message": "expect(received).toContain(expected)\nExpected substring: \"account suspended\"\nReceived string: \"invalid credentials\"",
+                    "stack": "Error: expect(received).toContain(expected)\n    at tests/e2e/authentication.spec.ts:154:29"
+                  },
+                  "stdout": "POST /api/auth/login 401 212ms\nfixture user=suspended-user@example.test"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "search",
+      "file": "tests/e2e/search.spec.ts",
+      "specs": [
+        {
+          "title": "returns matching products for a common query",
+          "line": 18,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 1321,
+                  "retry": 0,
+                  "stdout": "GET /api/search?q=wireless+headphones 200 86ms\n12 results rendered"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "shows an empty state for an unknown product",
+          "line": 41,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "failed",
+                  "duration": 1458,
+                  "retry": 0,
+                  "error": {
+                    "message": "expect(locator).toHaveText(expected)\nExpected: \"No products found\"\nReceived: \"Showing popular products\"",
+                    "stack": "Error: expect(locator).toHaveText(expected)\n    at tests/e2e/search.spec.ts:49:52\n    at SearchPage.assertEmptyState (src/pages/search-page.ts:77:19)"
+                  },
+                  "stdout": "GET /api/search?q=does-not-exist 200 114ms\nresponse items=[]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "recovers when the search service is unavailable",
+          "line": 72,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "failed",
+                  "duration": 8011,
+                  "retry": 0,
+                  "error": {
+                    "message": "fetch failed: socket hang up while requesting http://search-api:7700/indexes/products/search",
+                    "stack": "TypeError: fetch failed\n    at async searchProducts (src/search/client.ts:51:20)\n    at async tests/e2e/search.spec.ts:84:7\nCaused by: ECONNRESET search-api:7700"
+                  },
+                  "stderr": "GET /indexes/products/search 502 8001ms\nretry budget exhausted"
+                },
+                {
+                  "status": "failed",
+                  "duration": 8016,
+                  "retry": 1,
+                  "error": {
+                    "message": "fetch failed: socket hang up while requesting http://search-api:7700/indexes/products/search",
+                    "stack": "TypeError: fetch failed\n    at async searchProducts (src/search/client.ts:51:20)\n    at async tests/e2e/search.spec.ts:84:7\nCaused by: ECONNRESET search-api:7700"
+                  },
+                  "stderr": "GET /indexes/products/search 502 8004ms\nretry budget exhausted"
+                },
+                {
+                  "status": "failed",
+                  "duration": 8012,
+                  "retry": 2,
+                  "error": {
+                    "message": "fetch failed: socket hang up while requesting http://search-api:7700/indexes/products/search",
+                    "stack": "TypeError: fetch failed\n    at async searchProducts (src/search/client.ts:51:20)\n    at async tests/e2e/search.spec.ts:84:7\nCaused by: ECONNRESET search-api:7700"
+                  },
+                  "stderr": "GET /indexes/products/search 502 8000ms\nretry budget exhausted"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "keeps the selected filters after pagination",
+          "line": 113,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 912,
+                  "retry": 0,
+                  "stdout": "GET /api/search?q=shoes&page=2&size=24 200 102ms"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "reporting",
+      "file": "tests/e2e/reporting.spec.ts",
+      "specs": [
+        {
+          "title": "downloads a CSV report for the selected date range",
+          "line": 27,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "failed",
+                  "duration": 3110,
+                  "retry": 0,
+                  "error": {
+                    "message": "expect(received).toBe(expected)\nExpected: \"text/csv\"\nReceived: \"application/json\"",
+                    "stack": "Error: expect(received).toBe(expected)\n    at tests/e2e/reporting.spec.ts:43:38\n    at ReportPage.downloadCsv (src/pages/report-page.ts:118:21)"
+                  },
+                  "stdout": "GET /api/reports/orders/export 200 2144ms\ncontent-disposition: attachment; filename=orders.json"
+                },
+                {
+                  "status": "failed",
+                  "duration": 3094,
+                  "retry": 1,
+                  "error": {
+                    "message": "expect(received).toBe(expected)\nExpected: \"text/csv\"\nReceived: \"application/json\"",
+                    "stack": "Error: expect(received).toBe(expected)\n    at tests/e2e/reporting.spec.ts:43:38\n    at ReportPage.downloadCsv (src/pages/report-page.ts:118:21)"
+                  },
+                  "stdout": "GET /api/reports/orders/export 200 2079ms\ncontent-disposition: attachment; filename=orders.json"
+                },
+                {
+                  "status": "failed",
+                  "duration": 3102,
+                  "retry": 2,
+                  "error": {
+                    "message": "expect(received).toBe(expected)\nExpected: \"text/csv\"\nReceived: \"application/json\"",
+                    "stack": "Error: expect(received).toBe(expected)\n    at tests/e2e/reporting.spec.ts:43:38\n    at ReportPage.downloadCsv (src/pages/report-page.ts:118:21)"
+                  },
+                  "stdout": "GET /api/reports/orders/export 200 2091ms\ncontent-disposition: attachment; filename=orders.json"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "renders a PDF report within the request deadline",
+          "line": 71,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "timedOut",
+                  "duration": 45017,
+                  "retry": 0,
+                  "error": {
+                    "message": "Test timeout of 45000ms exceeded while waiting for download event",
+                    "stack": "TimeoutError: page.waitForEvent: Test timeout of 45000ms exceeded\n    at tests/e2e/reporting.spec.ts:89:27"
+                  },
+                  "stderr": "POST /api/reports/orders/pdf 202 44ms\nGET /api/reports/jobs/job_772/status 202 repeated 91 times"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "shows the report owner and last refreshed time",
+          "line": 119,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 1012,
+                  "retry": 0,
+                  "stdout": "GET /api/reports/orders 200 94ms"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "catalog",
+      "file": "tests/e2e/catalog.spec.ts",
+      "specs": [
+        {
+          "title": "loads product images from the CDN",
+          "line": 31,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "failed",
+                  "duration": 427,
+                  "retry": 0,
+                  "error": {
+                    "message": "browserType.launch: Executable doesn't exist at /opt/playwright/chromium-1148/chrome-linux/chrome",
+                    "stack": "Error: browserType.launch: Executable doesn't exist at /opt/playwright/chromium-1148/chrome-linux/chrome\n    at launchBrowser (tests/support/browser.ts:22:18)\n    at tests/e2e/catalog.spec.ts:35:5"
+                  },
+                  "stderr": "CI image is missing the Playwright browser dependency; run npx playwright install --with-deps"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "sorts products by price ascending",
+          "line": 78,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "failed",
+                  "duration": 1188,
+                  "retry": 0,
+                  "error": {
+                    "message": "expect(received).toEqual(expected)\nExpected: [19.99, 24.99, 39.99]\nReceived: [39.99, 24.99, 19.99]",
+                    "stack": "Error: expect(received).toEqual(expected)\n    at tests/e2e/catalog.spec.ts:92:45\n    at CatalogPage.productPrices (src/pages/catalog-page.ts:101:15)"
+                  },
+                  "stdout": "GET /api/products?sort=price_asc 200 113ms\nquery accepted by API but UI rendered the default order"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "changes currency when a locale is selected",
+          "line": 119,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "failed",
+                  "duration": 703,
+                  "retry": 0,
+                  "error": {
+                    "message": "SyntaxError: Unexpected token '<', \"<!doctype html>\" is not valid JSON",
+                    "stack": "SyntaxError: Unexpected token '<', \"<!doctype html>\" is not valid JSON\n    at JSON.parse (<anonymous>)\n    at parseExchangeRates (src/catalog/currency.ts:44:17)\n    at tests/e2e/catalog.spec.ts:132:11"
+                  },
+                  "stderr": "GET /api/exchange-rates 200 text/html; received the application shell instead of JSON"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "notifications",
+      "file": "tests/e2e/notifications.spec.ts",
+      "specs": [
+        {
+          "title": "receives an order status update over websocket",
+          "line": 22,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "failed",
+                  "duration": 10008,
+                  "retry": 0,
+                  "error": {
+                    "message": "WebSocket connection failed: connect ECONNREFUSED 127.0.0.1:8081",
+                    "stack": "Error: WebSocket connection failed: connect ECONNREFUSED 127.0.0.1:8081\n    at NotificationsClient.connect (src/notifications/client.ts:58:13)\n    at tests/e2e/notifications.spec.ts:37:5"
+                  },
+                  "stderr": "wss://events.test.example/ws closed before handshake\nlast event id: evt_3288"
+                },
+                {
+                  "status": "failed",
+                  "duration": 10004,
+                  "retry": 1,
+                  "error": {
+                    "message": "WebSocket connection failed: connect ECONNREFUSED 127.0.0.1:8081",
+                    "stack": "Error: WebSocket connection failed: connect ECONNREFUSED 127.0.0.1:8081\n    at NotificationsClient.connect (src/notifications/client.ts:58:13)\n    at tests/e2e/notifications.spec.ts:37:5"
+                  },
+                  "stderr": "wss://events.test.example/ws closed before handshake\nlast event id: evt_3291"
+                },
+                {
+                  "status": "failed",
+                  "duration": 10009,
+                  "retry": 2,
+                  "error": {
+                    "message": "WebSocket connection failed: connect ECONNREFUSED 127.0.0.1:8081",
+                    "stack": "Error: WebSocket connection failed: connect ECONNREFUSED 127.0.0.1:8081\n    at NotificationsClient.connect (src/notifications/client.ts:58:13)\n    at tests/e2e/notifications.spec.ts:37:5"
+                  },
+                  "stderr": "wss://events.test.example/ws closed before handshake\nlast event id: evt_3292"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "marks all notifications as read",
+          "line": 66,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 1298,
+                  "retry": 0,
+                  "stdout": "PATCH /api/notifications/read 204 118ms"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "admin",
+      "file": "tests/e2e/admin.spec.ts",
+      "specs": [
+        {
+          "title": "allows an organization owner to invite a member",
+          "line": 29,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "failed",
+                  "duration": 982,
+                  "retry": 0,
+                  "error": {
+                    "message": "expect(response.status()).toBe(201)\nExpected: 201\nReceived: 403",
+                    "stack": "Error: expect(response.status()).toBe(201)\n    at tests/e2e/admin.spec.ts:46:36\n    at inviteMember (src/admin/members.ts:61:14)"
+                  },
+                  "stderr": "POST /api/organizations/acme/members 403 176ms\npolicy decision: role=owner action=members.invite allowed=false"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "prevents a viewer from changing billing settings",
+          "line": 71,
+          "column": 5,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 744,
+                  "retry": 0,
+                  "stdout": "PATCH /api/billing/settings 403 102ms\npermission message rendered"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "platform",
+      "file": "tests/unit/platform-config.spec.ts",
+      "specs": [
+        {
+          "title": "loads the feature flag configuration",
+          "line": 14,
+          "column": 3,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "failed",
+                  "duration": 304,
+                  "retry": 0,
+                  "error": {
+                    "message": "Cannot find module '@company/feature-flags' imported from 'src/config/features.ts'",
+                    "stack": "Error: Cannot find module '@company/feature-flags' imported from 'src/config/features.ts'\n    at resolvePackage (node_modules/vite/dist/node/chunks/dep.js:48122:17)\n    at tests/unit/platform-config.spec.ts:18:9"
+                  },
+                  "stderr": "npm ci completed successfully but the private workspace package was not present"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "does not leak credentials into diagnostic output",
+          "line": 44,
+          "column": 3,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [
+                {
+                  "status": "passed",
+                  "duration": 88,
+                  "retry": 0,
+                  "stdout": "redaction checks passed for bearer tokens, API keys, and password fields"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

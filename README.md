@@ -101,17 +101,32 @@ npm ci
 npm run build
 ```
 
-Analyze the bundled sample:
+The canonical demo input is [`examples/sample-failure.json`](examples/sample-failure.json), a realistic Playwright JSON CI run. It includes multiple failures, retries, duplicate failures, and passed and skipped cases across checkout, authentication, search, and reporting flows.
+
+Analyze the bundled sample and print a Markdown report:
 
 ```bash
-node dist/cli.js examples/sample-failure.txt
+node dist/cli.js examples/sample-failure.json
 ```
 
-Generate machine-readable JSON:
+Generate machine-readable JSON output:
 
 ```bash
-node dist/cli.js --format json examples/sample-failure.txt
+node dist/cli.js --format json examples/sample-failure.json
 ```
+
+The Markdown report should make the failure groups easy to inspect, including categorized assertion, timeout, and network diagnostics, duplicate or retry/flakiness findings, evidence-backed suggested actions, and reproduction commands where source locations are available. The JSON report contains the same failures, evidence, diagnostics, and retry comparisons for automation.
+
+For the bundled sample, the deterministic summary should be:
+
+```text
+Total: 38
+Failed: 28
+Flaky: 1
+Diagnostics: 15
+```
+
+The generated timestamp and fingerprint values can differ between implementation versions, but the sample is designed to demonstrate assertion, timeout, network, build, environment, and syntax findings; repeated failures; a mixed retry outcome; passed tests; skipped tests; attached evidence; and credential redaction.
 
 Read from standard input and save a report:
 
@@ -132,7 +147,7 @@ docker build -t fail-lens .
 Run the bundled sample:
 
 ```bash
-docker run --rm fail-lens examples/sample-failure.txt
+docker run --rm fail-lens examples/sample-failure.json
 ```
 
 Analyze a local report through standard input:
@@ -146,13 +161,13 @@ cat failures.json | docker run --rm -i fail-lens --format json
 ### Analyze a file
 
 ```bash
-node dist/cli.js examples/sample-failure.txt
+node dist/cli.js examples/sample-failure.json
 ```
 
 ### Choose an output format
 
 ```bash
-node dist/cli.js --format json examples/sample-failure.txt
+node dist/cli.js --format json examples/sample-failure.json
 ```
 
 Use JSON when another script or tool needs to consume the report. Use the default Markdown output when you want to inspect a diagnosis directly in the terminal.
@@ -160,7 +175,7 @@ Use JSON when another script or tool needs to consume the report. Use the defaul
 ### Save a report
 
 ```bash
-node dist/cli.js --format markdown --output report.md examples/sample-failure.txt
+node dist/cli.js --format markdown --output report.md examples/sample-failure.json
 ```
 
 ### Display help
@@ -258,7 +273,7 @@ fail-lens/
 ├── .nvmrc
 ├── Dockerfile
 ├── docs/privacy.md
-├── examples/sample-failure.txt
+├── examples/sample-failure.json
 ├── src/
 │   ├── cli.ts
 │   ├── contracts/
