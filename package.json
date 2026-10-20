@@ -1,0 +1,25 @@
+{
+  "name": "fail-lens",
+  "version": "0.1.0",
+  "description": "Deterministic, offline-first CI failure diagnosis CLI",
+  "bin": {
+    "fail-lens": "dist/cli.js"
+  },
+  "files": ["dist", "README.md", "LICENSE", "CHANGELOG.md", "docs", "examples"],
+  "scripts": {
+    "test": "node --test tests/acceptance/*.test.mjs tests/privacy/*.test.mjs",
+    "test:unit": "npx --yes tsx --test tests/ingest/*.test.ts tests/report/*.test.ts tests/reproduce/*.test.ts && npx vitest run tests/diagnose/diagnose.test.ts",
+    "typecheck": "npx --yes -p typescript tsc --noEmit",
+    "build": "npm run clean && npx --yes -p typescript tsc",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\""
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  }
+}

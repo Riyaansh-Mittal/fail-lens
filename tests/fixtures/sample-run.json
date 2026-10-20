@@ -1,0 +1,18 @@
+{
+  "failures": [
+    {
+      "name": "checkout rejects an expired card",
+      "suite": "payments",
+      "status": "failed",
+      "message": "Expected 402, received 500",
+      "stack": "Error: Expected 402, received 500\n    at payments.test.ts:18:11",
+      "durationMs": 143
+    },
+    {
+      "name": "homepage loads",
+      "suite": "smoke",
+      "status": "passed",
+      "durationMs": 61
+    }
+  ]
+}

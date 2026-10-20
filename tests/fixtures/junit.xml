@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="unit" tests="2" failures="1" time="0.012">
+    <testcase classname="calculator" name="adds values" time="0.002" />
+    <testcase classname="calculator" name="rejects bad input" file="src/calculator.test.ts" time="0.010">
+      <failure message="expected 2 but received 3" type="AssertionError">AssertionError: expected 2 but received 3
+    at src/calculator.test.ts:9:3</failure>
+      <system-out>attempt=1</system-out>
+    </testcase>
+  </testsuite>
+</testsuites>

@@ -1,0 +1,13 @@
+{
+  "numTotalTestSuites": 1,
+  "numTotalTests": 2,
+  "testResults": [
+    {
+      "testFilePath": "/workspace/src/math.test.ts",
+      "assertionResults": [
+        { "ancestorTitles": ["math"], "title": "adds values", "fullName": "math adds values", "status": "passed", "duration": 2, "location": { "line": 4, "column": 1 } },
+        { "ancestorTitles": ["math"], "title": "rejects bad input", "fullName": "math rejects bad input", "status": "failed", "failureMessages": ["Expected: 2\nReceived: 3"], "duration": 4, "location": { "line": 9, "column": 1 } }
+      ]
+    }
+  ]
+}

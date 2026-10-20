@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+*.log
+*.tgz
+.DS_Store
+
+# Workspace/runtime state, not part of the FailLens project.
+.opencode/
+.omnirush/
+opencode.jsonc

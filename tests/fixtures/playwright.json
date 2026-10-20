@@ -1,0 +1,26 @@
+{
+  "config": { "workers": 1 },
+  "suites": [
+    {
+      "title": "checkout",
+      "file": "tests/checkout.spec.ts",
+      "specs": [
+        {
+          "title": "shows a validation error",
+          "line": 12,
+          "column": 3,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "results": [{ "status": "failed", "duration": 42, "retry": 0, "error": { "message": "expect(received).toBe(true)", "stack": "Error: expect(received).toBe(true)\n    at tests/checkout.spec.ts:14:7" }, "stdout": "request completed" }]
+            },
+            {
+              "expectedStatus": "skipped",
+              "results": [{ "status": "skipped" }]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies when a package manifest exists
+        shell: bash
+        run: |
+          if [[ -f package-lock.json ]]; then npm ci; \
+          elif [[ -f package.json ]]; then npm install; \
+          else echo "No root package manifest; running dependency-free checks."; fi
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Build
+        run: npm run build
+      - name: Run acceptance and privacy tests
+        run: npm test
+        # Equivalent to the original dependency-free check: node --test tests/**/*.test.mjs
+      - name: Run unit tests
+        run: npm run test:unit
+
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify contract exports
+        run: node --test tests/acceptance/contracts.test.mjs
